@@ -40,12 +40,25 @@
     <dependency>
       <groupId>org.mongodb</groupId>
       <artifactId>mongodb-driver-sync</artifactId>
-      <version>4.10.2</version>
+      <version>4.3.3</version>
     </dependency>
+    <!-- SLF4J API -->
     <dependency>
-      <groupId>org.mongodb</groupId>
-      <artifactId>mongodb-driver</artifactId>
-      <version>4.10.2</version>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.32</version> <!-- Aktuelle Version, bitte prüfen -->
+    </dependency>
+
+    <!-- Logback Core und Classic -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>1.2.9</version> <!-- Aktuelle Version, bitte prüfen -->
+    </dependency><![CDATA[
+    ]]><dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.9</version> <!-- Aktuelle Version, bitte prüfen -->
     </dependency>
   </dependencies>
 

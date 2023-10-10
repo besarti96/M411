@@ -5,8 +5,8 @@
 <?import javafx.scene.shape.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
-   <Line endX="560.5" endY="40.5" startX="16.5" startY="40.5" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="40.0"/>
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea">
+<Line endX="560.5" endY="40.5" startX="16.5" startY="40.5" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="40.0"/>
    <Line endX="559.5" endY="327.0" layoutX="10.0" layoutY="10.0" startX="12.5" startY="327.0"/>
    <Label text="Person erfassen" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0"/>
    <Label text="Name:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="60.0"/>
