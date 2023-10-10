@@ -60,6 +60,11 @@
       <artifactId>logback-classic</artifactId>
       <version>1.2.9</version> <!-- Aktuelle Version, bitte prüfen -->
     </dependency>
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongodb-driver-sync</artifactId>
+      <version>4.3.3</version>
+    </dependency>
   </dependencies>
 
   <build>
