@@ -1,8 +1,7 @@
-Personen
-Vorname
-Name
-Geschlecht
-Geburtsdatum
-AHV-Nummer
-ID_Region
-Kinderanzahl
+Vorname,
+Name,
+Geschlecht,
+Geburtsdatum,
+AHV-Nummer,
+ID_Region,
+Kinderanzahl,
