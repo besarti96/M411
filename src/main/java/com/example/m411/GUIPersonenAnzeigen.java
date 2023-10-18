@@ -1,98 +1,57 @@
 package com.example.m411;
 
-import com.mongodb.client.MongoDatabase;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-public class GUIPersonenAnzeigen implements Initializable {
-    @FXML
-    private Label nameLabel;
+public class GUIPersonenAnzeigen {
+    private ResultSet resultSet;
 
-    @FXML
-    private Label vornameLabel;
+    public GUIPersonenAnzeigen() {
+        try {
+            // Verwenden der DatabaseConnection Klasse für die Verbindung
+            Connection connection = DatabaseConnection.getDatabase();
 
-    @FXML
-    private Label geschlechtLabel;
-
-    @FXML
-    private Label geburtsdatumLabel;
-
-    @FXML
-    private Label ahvNummerLabel;
-
-    @FXML
-    private Label idRegionLabel;
-
-    @FXML
-    private Label kinderanzahlLabel;
-
-    @FXML
-    private Button editButton;
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // Beispielsweise können Sie die Datenbankverbindung hier herstellen
-        MongoDatabase database = mongodb.getDatabase();
-
-        // Hier könnte der Code stehen, um eine spezifische Person anhand eines Identifikators abzurufen
-        String ahvNummer = "756.9999.9999.99"; // Beispiel-AHV-Nummer
-        Person person = mongodb.getPerson(database, ahvNummer); // Angenommen, dass eine Methode getPerson existiert
-
-        // Setzen der Labels mit den Daten aus der MongoDB
-        assert person != null;
-        nameLabel.setText(person.getName());
-        vornameLabel.setText(person.getVorname());
-        geschlechtLabel.setText(person.getGeschlecht());
-        geburtsdatumLabel.setText(person.getGeburtsdatum());
-        ahvNummerLabel.setText(person.getAhvNummer());
-        idRegionLabel.setText(person.getIdRegion());
-        kinderanzahlLabel.setText(String.valueOf(person.getKinderanzahl()));
-
-        editButton.setOnAction(e -> {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("com/example/m411/edit_person_view.fxml"));
-                Parent root = fxmlLoader.load();
-
-                // Erstellen Sie eine neue Szene mit der Bearbeitungsansicht
-                Scene scene = new Scene(root);
-
-                // Erstellen Sie ein neues Fenster (Stage) für die Bearbeitungsansicht
-                Stage editStage = new Stage();
-                editStage.setTitle("Person Bearbeiten"); // Titel des Bearbeitungsfensters
-                editStage.setScene(scene);
-
-                // Zeigen Sie das Bearbeitungsfenster an
-                editStage.show();
-
-                // Schließen Sie das aktuelle Fenster (dieses Fenster)
-                Stage currentStage = (Stage) editButton.getScene().getWindow();
-                currentStage.close();
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if (connection != null) {
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "SELECT * FROM Person",
+                        ResultSet.TYPE_SCROLL_INSENSITIVE,
+                        ResultSet.CONCUR_READ_ONLY
+                );
+                resultSet = preparedStatement.executeQuery();
+            } else {
+                System.out.println("Datenbankverbindung fehlgeschlagen");
             }
-        });
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @FXML
-    private Button edit;
+    public void showNextPerson(Label nameLabel, Label vornameLabel /*, weitere Labels */) {
+        try {
+            if (resultSet.next()) {
+                updatePersonInfo(nameLabel, vornameLabel /*, weitere Labels */);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    @FXML
-    private void handleEditButtonAction(ActionEvent event) throws IOException {
-        Stage stage = (Stage) edit.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("personen_bearbeiten.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        stage.setScene(scene);
+    public void showPreviousPerson(Label nameLabel, Label vornameLabel /*, weitere Labels */) {
+        try {
+            if (resultSet.previous()) {
+                updatePersonInfo(nameLabel, vornameLabel /*, weitere Labels */);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updatePersonInfo(Label nameLabel, Label vornameLabel /*, weitere Labels */) throws Exception {
+        nameLabel.setText(resultSet.getString("Name"));
+        vornameLabel.setText(resultSet.getString("Vorname"));
+        // Hier könnten Sie die Informationen für weitere Labels hinzufügen
     }
 }

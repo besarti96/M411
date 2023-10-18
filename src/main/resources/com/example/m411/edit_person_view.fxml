@@ -4,22 +4,24 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea">
-<Line endX="560.5" endY="40.5" startX="16.5" startY="40.5" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="40.0"/>
-   <Line endX="559.5" endY="327.0" layoutX="10.0" layoutY="10.0" startX="12.5" startY="327.0"/>
-   <Label text="Person erfassen" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0"/>
-   <Label text="Name:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="60.0"/>
-   <Label layoutX="25.0" layoutY="70.0" text="Vorname:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="100.0"/>
-   <RadioButton mnemonicParsing="false" text="Mann" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="150.0"/>
-   <RadioButton layoutX="160.0" layoutY="110.0" mnemonicParsing="false" text="Frau" AnchorPane.leftAnchor="250.0"
-                AnchorPane.topAnchor="150.0"/>
-   <TextField AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="60.0"/>
-   <TextField layoutX="210.0" layoutY="70.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0"/>
-   <Label layoutX="25.0" layoutY="110.0" text="Geburtstag:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="200.0"/>
-   <TextField layoutX="160.0" layoutY="110.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="200.0"/>
-   <Label layoutX="25.0" layoutY="210.0" text="AHV Nummer:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="230.0"/>
-   <TextField layoutX="170.0" layoutY="210.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="230.0"/>
-   <Label layoutX="25.0" layoutY="240.0" text="Region:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="260.0"/>
-   <TextField layoutX="170.0" layoutY="240.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="260.0"/>
+<AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.m411.GUIPersonenBearbeiten">
+<Line endX="560.5" endY="40.5" startX="16.5" startY="40.5" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="40.0" />
+   <Line endX="559.5" endY="327.0" layoutX="10.0" layoutY="10.0" startX="12.5" startY="327.0" />
+   <Label text="Person erfassen" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
+   <Label text="Name:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="60.0" />
+   <Label layoutX="25.0" layoutY="70.0" text="Vorname:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="90.0" />
+   <TextField fx:id="editName" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="60.0" />
+   <TextField fx:id="editVorname" layoutX="210.0" layoutY="70.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="90.0" />
+   <Label layoutX="25.0" layoutY="110.0" text="Geburtstag:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="200.0" />
+   <Label layoutX="25.0" layoutY="210.0" text="AHV Nummer:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="230.0" />
+   <TextField fx:id="editAHV" layoutX="170.0" layoutY="210.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="230.0" />
+   <Label layoutX="25.0" layoutY="240.0" text="Region:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="260.0" />
+   <Button fx:id="saveButton" layoutX="501.0" layoutY="353.0" mnemonicParsing="false" text="Speichern" />
+   <Label layoutX="13.0" layoutY="296.0" text="Anzahl Kinder" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="290.0" />
+   <Label layoutX="19.0" layoutY="142.0" text="Geschlecht:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="150.0" />
+   <CheckBox fx:id="manCheck" layoutX="150.0" layoutY="150.0" mnemonicParsing="false" text="Männlich" />
+   <CheckBox fx:id="checkWman" layoutX="233.0" layoutY="150.0" mnemonicParsing="false" text="Weiblich" />
+   <TextField fx:id="editKinder" layoutX="150.0" layoutY="295.0" prefHeight="25.0" prefWidth="61.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="290.0" />
+   <DatePicker layoutX="146.0" layoutY="196.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="200.0"/>
+   <ChoiceBox layoutX="150.0" layoutY="265.0" prefWidth="150.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="260.0" />
 </AnchorPane>
