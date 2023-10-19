@@ -168,6 +168,12 @@ public class GUIPersonenBearbeiten implements Initializable {
 
                     ps.executeUpdate(); // Ausführen der Abfrage
 
+                    // Zurück zum ersten View
+                    Stage stage = (Stage) saveButton.getScene().getWindow();
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("persons_view.fxml")));
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
