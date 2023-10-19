@@ -12,12 +12,18 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class GUIPersonenBearbeiten implements Initializable {
     private final HashMap<String, Integer> regionMap = new HashMap<>();
     private static final String SELECT_QUERY = "SELECT * FROM person WHERE AHV_Nummer = ?";
     private static final String UPDATE_QUERY = "UPDATE Person SET Name = ?, Vorname = ?, Geschlecht = ?, Geburtsdatum = ?, AHV_Nummer = ?, ID_Region = ?, Kinderanzahl = ? WHERE AHV_Nummer = ?";
+    public Button cancelButton;
     private String currentAhvNummer;
 
     @FXML
@@ -65,6 +71,21 @@ public class GUIPersonenBearbeiten implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        setupCancelButton();
+    }
+
+    private void setupCancelButton() {
+        cancelButton.setOnAction(e -> {
+            try {
+                Stage stage = (Stage) cancelButton.getScene().getWindow();
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("persons_view.fxml"))); // Pfad zum FXML des ersten Views
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     private void loadRegionenFromDatabase(Connection databaseConnection) {

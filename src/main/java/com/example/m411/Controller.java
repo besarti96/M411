@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    private final GUIPersonenAnzeigen guiPersonenAnzeigen = new GUIPersonenAnzeigen();
+    private GUIPersonenAnzeigen guiPersonenAnzeigen;
 
     @FXML
     private Button edit;
@@ -35,6 +35,8 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        guiPersonenAnzeigen = new GUIPersonenAnzeigen(nameLabel, vornameLabel /*, weitere Labels */);
 
 
         nextButton.setOnAction(e -> guiPersonenAnzeigen.showNextPerson(nameLabel, vornameLabel /*, weitere Labels */));

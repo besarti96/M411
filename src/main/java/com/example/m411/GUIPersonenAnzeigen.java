@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 public class GUIPersonenAnzeigen {
     private ResultSet resultSet;
 
-    public GUIPersonenAnzeigen() {
+    public GUIPersonenAnzeigen(Label nameLabel, Label vornameLabel) {
         try {
             // Verwenden der DatabaseConnection Klasse für die Verbindung
             Connection connection = DatabaseConnection.getDatabase();
@@ -21,6 +21,10 @@ public class GUIPersonenAnzeigen {
                         ResultSet.CONCUR_READ_ONLY
                 );
                 resultSet = preparedStatement.executeQuery();
+
+                // Die erste Person anzeigen
+                showNextPerson(nameLabel, vornameLabel /*, weitere Labels */);
+
             } else {
                 System.out.println("Datenbankverbindung fehlgeschlagen");
             }
@@ -57,7 +61,10 @@ public class GUIPersonenAnzeigen {
 
     public String getCurrentAhvNummer() {
         try {
-            return resultSet.getString("AHV_Nummer");
+            if (!resultSet.isAfterLast()) {
+                return resultSet.getString("AHV_Nummer");
+            }
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
