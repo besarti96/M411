@@ -27,6 +27,12 @@ public class Controller implements Initializable {
     private Label vornameLabel;
 
     @FXML
+    private Label geschlechtLabel;
+
+    @FXML
+    private Label geburtstagLabel;
+
+    @FXML
     private Button nextButton;
 
     @FXML
@@ -36,11 +42,11 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        guiPersonenAnzeigen = new GUIPersonenAnzeigen(nameLabel, vornameLabel /*, weitere Labels */);
+        guiPersonenAnzeigen = new GUIPersonenAnzeigen(nameLabel, vornameLabel, geschlechtLabel, geburtstagLabel /*, weitere Labels */);
 
 
-        nextButton.setOnAction(e -> guiPersonenAnzeigen.showNextPerson(nameLabel, vornameLabel /*, weitere Labels */));
-        prevButton.setOnAction(e -> guiPersonenAnzeigen.showPreviousPerson(nameLabel, vornameLabel /*, weitere Labels */));
+        nextButton.setOnAction(e -> guiPersonenAnzeigen.showNextPerson(nameLabel, vornameLabel, geschlechtLabel, geburtstagLabel/*, weitere Labels */));
+        prevButton.setOnAction(e -> guiPersonenAnzeigen.showPreviousPerson(nameLabel, vornameLabel, geschlechtLabel, geburtstagLabel /*, weitere Labels */));
     }
 
     @FXML
