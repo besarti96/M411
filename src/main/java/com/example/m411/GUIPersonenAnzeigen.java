@@ -37,7 +37,10 @@ public class GUIPersonenAnzeigen {
         try {
             if (resultSet.next()) {
                 updatePersonInfo(nameLabel, vornameLabel /*, weitere Labels */);
-            }
+            } else {
+            resultSet.first();
+            updatePersonInfo(nameLabel, vornameLabel /*, weitere Labels */);
+        }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,6 +49,9 @@ public class GUIPersonenAnzeigen {
     public void showPreviousPerson(Label nameLabel, Label vornameLabel /*, weitere Labels */) {
         try {
             if (resultSet.previous()) {
+                updatePersonInfo(nameLabel, vornameLabel /*, weitere Labels */);
+            } else {
+                resultSet.last();
                 updatePersonInfo(nameLabel, vornameLabel /*, weitere Labels */);
             }
         } catch (Exception e) {

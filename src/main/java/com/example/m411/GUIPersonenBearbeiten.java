@@ -172,19 +172,19 @@ public class GUIPersonenBearbeiten implements Initializable {
 
                     int rowsAffected = ps.executeUpdate(); // Ausführen der Abfrage
 
+                    Alert alert;
                     if (rowsAffected > 0) {
-                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Update Status");
                         alert.setHeaderText(null);
                         alert.setContentText("Successfully updated.");
-                        alert.showAndWait();
                     } else {
-                        Alert alert = new Alert(AlertType.ERROR);
+                        alert = new Alert(AlertType.ERROR);
                         alert.setTitle("Update Status");
                         alert.setHeaderText(null);
                         alert.setContentText("Update failed.");
-                        alert.showAndWait();
                     }
+                    alert.showAndWait();
 
                     // Zurück zum ersten View
                     Stage stage = (Stage) saveButton.getScene().getWindow();
