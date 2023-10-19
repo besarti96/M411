@@ -19,9 +19,11 @@
    <Button fx:id="saveButton" layoutX="501.0" layoutY="353.0" mnemonicParsing="false" text="Speichern" />
    <Label layoutX="13.0" layoutY="296.0" text="Anzahl Kinder" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="290.0" />
    <Label layoutX="19.0" layoutY="142.0" text="Geschlecht:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="150.0" />
-   <CheckBox fx:id="manCheck" layoutX="150.0" layoutY="150.0" mnemonicParsing="false" text="Männlich" />
-   <CheckBox fx:id="checkWman" layoutX="233.0" layoutY="150.0" mnemonicParsing="false" text="Weiblich" />
+   <RadioButton fx:id="manRadio" layoutX="150.0" layoutY="150.0" mnemonicParsing="false" text="Männlich" />
+   <RadioButton fx:id="womanRadio" layoutX="233.0" layoutY="150.0" mnemonicParsing="false" text="Weiblich" />
    <TextField fx:id="editKinder" layoutX="150.0" layoutY="295.0" prefHeight="25.0" prefWidth="61.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="290.0" />
-   <DatePicker layoutX="146.0" layoutY="196.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="200.0"/>
-   <ChoiceBox layoutX="150.0" layoutY="265.0" prefWidth="150.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="260.0" />
+   <DatePicker fx:id="birthday" layoutY="196.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="200.0" />
+   <ChoiceBox fx:id="choiceRegion" layoutX="150.0" layoutY="265.0" prefWidth="150.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="260.0" />
+   <TextField fx:id="geschlechtField" disable="true" editable="false" layoutX="324.0" layoutY="146.0" prefHeight="25.0" prefWidth="77.0" AnchorPane.leftAnchor="324.0" AnchorPane.topAnchor="146.0" />
+   <Button fx:id="cancelButton" layoutX="15.0" layoutY="353.0" mnemonicParsing="false" text="Abbrechen" />
 </AnchorPane>

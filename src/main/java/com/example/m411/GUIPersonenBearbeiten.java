@@ -2,62 +2,109 @@ package com.example.m411;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class GUIPersonenBearbeiten implements Initializable {
+    private final HashMap<String, Integer> regionMap = new HashMap<>();
     private static final String SELECT_QUERY = "SELECT * FROM person WHERE AHV_Nummer = ?";
     private static final String UPDATE_QUERY = "UPDATE Person SET Name = ?, Vorname = ?, Geschlecht = ?, Geburtsdatum = ?, AHV_Nummer = ?, ID_Region = ?, Kinderanzahl = ? WHERE AHV_Nummer = ?";
+    private String currentAhvNummer;
 
+    @FXML
+    public RadioButton manRadio;
+    @FXML
+    public RadioButton womanRadio;
+    @FXML
+    public TextField geschlechtField;
     @FXML
     private TextField editName;
     @FXML
     private TextField editVorname;
     @FXML
-    private TextField geschlechtField;
-    @FXML
-    private TextField birthday;
+    private DatePicker birthday;
     @FXML
     private TextField editAHV;
     @FXML
-    private TextField choiceRegion;
+    private ChoiceBox<String> choiceRegion;
     @FXML
     private TextField editKinder;
-
     @FXML
     private Button saveButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Connection databaseConnection = DatabaseConnection.getDatabase();
-        if (databaseConnection == null) {
-            // Handle the error appropriately
-            return;
-        }
+        ToggleGroup genderToggleGroup = new ToggleGroup();
+        manRadio.setToggleGroup(genderToggleGroup);
+        womanRadio.setToggleGroup(genderToggleGroup);
 
-        populateFields(databaseConnection);
-        setupSaveButton(databaseConnection);
+        genderToggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            if (newToggle != null) {
+                RadioButton selected = (RadioButton) newToggle;
+                geschlechtField.setText(selected.getText()); // aktualisiere das TextField
+            }
+        });
+
+        try (Connection databaseConnection = DatabaseConnection.getDatabase()) {
+            if (databaseConnection == null) {
+                System.err.println("Datenbankverbindung konnte nicht hergestellt werden.");
+                return;
+            }
+            populateFields(databaseConnection);
+            setupSaveButton();
+            loadRegionenFromDatabase(databaseConnection);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadRegionenFromDatabase(Connection databaseConnection) {
+        String query = "SELECT ID_Region, Region FROM RegionTB";
+        try (PreparedStatement ps = databaseConnection.prepareStatement(query);
+             ResultSet resultSet = ps.executeQuery()) {
+            while (resultSet.next()) {
+                choiceRegion.getItems().add(resultSet.getString("Region"));
+                regionMap.put(resultSet.getString("Region"), resultSet.getInt("ID_Region"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void populateFields(Connection connection) {
-        String ahvNummer = "756.9999.9999.99"; // Beispiel-AHV-Nummer
         try (PreparedStatement ps = connection.prepareStatement(SELECT_QUERY)) {
-            ps.setString(1, ahvNummer);
+            ps.setString(1, currentAhvNummer);
             try (ResultSet resultSet = ps.executeQuery()) {
                 if (resultSet.next()) {
+                    // Hier Felder füllen
                     editName.setText(resultSet.getString("Name"));
                     editVorname.setText(resultSet.getString("Vorname"));
-                    geschlechtField.setText(resultSet.getString("Geschlecht"));
-                    birthday.setText(resultSet.getString("Geburtsdatum"));
-                    editAHV.setText(String.valueOf(Integer.parseInt(resultSet.getString("AHV_Nummer"))));
-                    choiceRegion.setText(resultSet.getString("ID_Region"));
+                    birthday.setValue(LocalDate.parse(resultSet.getString("Geburtsdatum")));
+                    editAHV.setText(resultSet.getString("AHV_Nummer"));
                     editKinder.setText(resultSet.getString("Kinderanzahl"));
+                    int idRegion = resultSet.getInt("ID_Region");
+                    for (Map.Entry<String, Integer> entry : regionMap.entrySet()) {
+                        if (entry.getValue().equals(idRegion)) {
+                            choiceRegion.getSelectionModel().select(entry.getKey());
+                            break;
+                        }
+                    }
+                    String geschlecht = resultSet.getString("Geschlecht");
+                    if ("Männlich".equals(geschlecht)) {
+                        manRadio.setSelected(true);
+                    } else if ("Weiblich".equals(geschlecht)) {
+                        womanRadio.setSelected(true);
+                    }
+                    geschlechtField.setText(geschlecht);
                 }
             }
         } catch (Exception e) {
@@ -65,24 +112,46 @@ public class GUIPersonenBearbeiten implements Initializable {
         }
     }
 
-    // Methode zum Setzen der AHV-Nummer
-    public void setAhvNummer(TextField ahvNummer) {
-        this.editAHV = ahvNummer;
-        populateFields(DatabaseConnection.getDatabase());
+    public void setAhvNummer(String ahvNummer) {
+        this.currentAhvNummer = ahvNummer;
+        try (Connection databaseConnection = DatabaseConnection.getDatabase()) {
+            if (databaseConnection != null) {
+                populateFields(databaseConnection);
+            } else {
+                System.err.println("Datenbankverbindung konnte nicht hergestellt werden.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    private void setupSaveButton(Connection connection) {
+
+    private void setupSaveButton() {
         saveButton.setOnAction(e -> {
-            try (PreparedStatement ps = connection.prepareStatement(UPDATE_QUERY)) {
-                // Setzen der Parameter...
-                int rows = ps.executeUpdate();
-                if (rows > 0) {
-                    System.out.println("Datensatz erfolgreich aktualisiert.");
-                } else {
-                    System.out.println("Aktualisierung fehlgeschlagen.");
+            try (Connection connection = DatabaseConnection.getDatabase()) {
+                assert connection != null;
+                try (PreparedStatement ps = connection.prepareStatement(UPDATE_QUERY)) {
+
+                    // Setzen der anderen Werte.
+                    ps.setString(1, editName.getText());
+                    ps.setString(2, editVorname.getText());
+                    ps.setString(3, geschlechtField.getText());
+                    ps.setDate(4, Date.valueOf(birthday.getValue()));
+                    ps.setString(5, editAHV.getText());
+
+                    String selectedRegion = choiceRegion.getSelectionModel().getSelectedItem();
+                    int idRegion = regionMap.getOrDefault(selectedRegion, 0); // 0 als Standardwert
+                    ps.setInt(6, idRegion); // 6. Platzhalter in UPDATE_QUERY
+
+                    ps.setString(7, editKinder.getText());
+                    ps.setString(8, currentAhvNummer);
+
+                    ps.executeUpdate(); // Ausführen der Abfrage
+
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
     }
+
 }

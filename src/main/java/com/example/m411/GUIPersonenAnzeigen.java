@@ -54,4 +54,13 @@ public class GUIPersonenAnzeigen {
         vornameLabel.setText(resultSet.getString("Vorname"));
         // Hier könnten Sie die Informationen für weitere Labels hinzufügen
     }
+
+    public String getCurrentAhvNummer() {
+        try {
+            return resultSet.getString("AHV_Nummer");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
