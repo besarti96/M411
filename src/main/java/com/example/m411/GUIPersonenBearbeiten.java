@@ -18,6 +18,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class GUIPersonenBearbeiten implements Initializable {
     private final HashMap<String, Integer> regionMap = new HashMap<>();
@@ -167,6 +169,22 @@ public class GUIPersonenBearbeiten implements Initializable {
                     ps.setString(8, currentAhvNummer);
 
                     ps.executeUpdate(); // Ausführen der Abfrage
+
+                    int rowsAffected = ps.executeUpdate(); // Ausführen der Abfrage
+
+                    if (rowsAffected > 0) {
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Update Status");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Successfully updated.");
+                        alert.showAndWait();
+                    } else {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Update Status");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Update failed.");
+                        alert.showAndWait();
+                    }
 
                     // Zurück zum ersten View
                     Stage stage = (Stage) saveButton.getScene().getWindow();
