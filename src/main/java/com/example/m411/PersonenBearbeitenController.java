@@ -21,12 +21,14 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class GUIPersonenBearbeiten implements Initializable {
+public class PersonenBearbeitenController implements Initializable {
+
+    // Variabeln und Attribute aus FXML initialisieren
     private final HashMap<String, Integer> regionMap = new HashMap<>();
     private static final String SELECT_QUERY = "SELECT * FROM person WHERE AHV_Nummer = ?";
     private static final String UPDATE_QUERY = "UPDATE Person SET Name = ?, Vorname = ?, Geschlecht = ?, Geburtsdatum = ?, AHV_Nummer = ?, ID_Region = ?, Kinderanzahl = ? WHERE AHV_Nummer = ?";
-    public Button cancelButton;
     private String currentAhvNummer;
+    public Button cancelButton;
 
     @FXML
     public RadioButton manRadio;
@@ -49,6 +51,7 @@ public class GUIPersonenBearbeiten implements Initializable {
     @FXML
     private Button saveButton;
 
+    // Radio Buttons initialisieren (Gruppe) = Damit nicht beide angeklickt werden können
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ToggleGroup genderToggleGroup = new ToggleGroup();
@@ -77,19 +80,7 @@ public class GUIPersonenBearbeiten implements Initializable {
         setupCancelButton();
     }
 
-    private void setupCancelButton() {
-        cancelButton.setOnAction(e -> {
-            try {
-                Stage stage = (Stage) cancelButton.getScene().getWindow();
-                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("persons_view.fxml"))); // Pfad zum FXML des ersten Views
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
-    }
-
+    // Regionen aus Tabelle RegionTB holen
     private void loadRegionenFromDatabase(Connection databaseConnection) {
         String query = "SELECT ID_Region, Region FROM RegionTB";
         try (PreparedStatement ps = databaseConnection.prepareStatement(query);
@@ -103,6 +94,7 @@ public class GUIPersonenBearbeiten implements Initializable {
         }
     }
 
+    // Felder füllen mit den vorhanden Daten aus der DB
     private void populateFields(Connection connection) {
         try (PreparedStatement ps = connection.prepareStatement(SELECT_QUERY)) {
             ps.setString(1, currentAhvNummer);
@@ -135,6 +127,7 @@ public class GUIPersonenBearbeiten implements Initializable {
         }
     }
 
+    // AHV Nummer muss vorhanden sein, deshalb wird sie gesetzt. (Falls nicht vorhanden, Fehler)
     public void setAhvNummer(String ahvNummer) {
         this.currentAhvNummer = ahvNummer;
         try (Connection databaseConnection = DatabaseConnection.getDatabase()) {
@@ -148,6 +141,7 @@ public class GUIPersonenBearbeiten implements Initializable {
         }
     }
 
+    // Speichern Button initialisieren
     private void setupSaveButton() {
         saveButton.setOnAction(e -> {
             try (Connection connection = DatabaseConnection.getDatabase()) {
@@ -163,7 +157,7 @@ public class GUIPersonenBearbeiten implements Initializable {
 
                     String selectedRegion = choiceRegion.getSelectionModel().getSelectedItem();
                     int idRegion = regionMap.getOrDefault(selectedRegion, 0); // 0 als Standardwert
-                    ps.setInt(6, idRegion); // 6. Platzhalter in UPDATE_QUERY
+                    ps.setInt(6, idRegion);
 
                     ps.setString(7, editKinder.getText());
                     ps.setString(8, currentAhvNummer);
@@ -177,22 +171,36 @@ public class GUIPersonenBearbeiten implements Initializable {
                         alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Update Status");
                         alert.setHeaderText(null);
-                        alert.setContentText("Successfully updated.");
+                        alert.setContentText("Erfolgreich Aktualisiert.");
                     } else {
                         alert = new Alert(AlertType.ERROR);
                         alert.setTitle("Update Status");
                         alert.setHeaderText(null);
-                        alert.setContentText("Update failed.");
+                        alert.setContentText("Fehler beim aktualisieren.");
                     }
                     alert.showAndWait();
 
-                    // Zurück zum ersten View
+                    // Zurück zur ersten View
                     Stage stage = (Stage) saveButton.getScene().getWindow();
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("persons_view.fxml")));
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
 
                 }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+
+    // Abbrechen Button initialisieren
+    private void setupCancelButton() {
+        cancelButton.setOnAction(e -> {
+            try {
+                Stage stage = (Stage) cancelButton.getScene().getWindow();
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("persons_view.fxml"))); // Pfad zum FXML der ersten View
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

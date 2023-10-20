@@ -10,18 +10,19 @@ import java.util.Objects;
 
 public class MainApplication extends Application {
 
+    // Start des Programms
     @Override
     public void start(Stage stage) throws Exception {
 
         Connection databaseConnection = DatabaseConnection.getDatabase();
         if (databaseConnection != null) {
-            System.out.println("Successfully connected to the database.");
+            System.out.println("Datenbankverbindung erfolgreich hergestellt.");
         } else {
-            System.out.println("Failed to connect to the database.");
+            System.out.println("Fehler bei der Datenbankverbindung.");
             return; // Beenden der Anwendung, da keine Datenbankverbindung hergestellt werden konnte
         }
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("persons_view.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("persons_view.fxml"))); // Erste View aufrufen
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

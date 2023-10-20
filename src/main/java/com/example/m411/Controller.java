@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    private GUIPersonenAnzeigen guiPersonenAnzeigen;
+    private PersonenAnzeigenController personenAnzeigenController;
 
     @FXML
     private Button edit;
@@ -42,30 +42,30 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        guiPersonenAnzeigen = new GUIPersonenAnzeigen(nameLabel, vornameLabel, geschlechtLabel, geburtstagLabel /*, weitere Labels */);
+        personenAnzeigenController = new PersonenAnzeigenController(nameLabel, vornameLabel, geschlechtLabel, geburtstagLabel /*, weitere Labels */);
 
 
-        nextButton.setOnAction(e -> guiPersonenAnzeigen.showNextPerson(nameLabel, vornameLabel, geschlechtLabel, geburtstagLabel/*, weitere Labels */));
-        prevButton.setOnAction(e -> guiPersonenAnzeigen.showPreviousPerson(nameLabel, vornameLabel, geschlechtLabel, geburtstagLabel /*, weitere Labels */));
+        nextButton.setOnAction(e -> personenAnzeigenController.showNextPerson(nameLabel, vornameLabel, geschlechtLabel, geburtstagLabel/*, weitere Labels */));
+        prevButton.setOnAction(e -> personenAnzeigenController.showPreviousPerson(nameLabel, vornameLabel, geschlechtLabel, geburtstagLabel /*, weitere Labels */));
     }
 
     @FXML
     private void handleEditButtonAction(ActionEvent event) throws IOException {
         // Holen der aktuellen AHV Nummer
-        String ahvNummer = guiPersonenAnzeigen.getCurrentAhvNummer();
+        String ahvNummer = personenAnzeigenController.getCurrentAhvNummer();
 
         Stage stage = (Stage) edit.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edit_person_view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
 
         // Zugriff auf den Controller der edit_person_view.fxml
-        GUIPersonenBearbeiten controller = fxmlLoader.getController();
+        PersonenBearbeitenController controller = fxmlLoader.getController();
 
-        // Setzen der AHV Nummer im Bearbeitungscontroller
+        // Setzen der AHV Nummer im PersonenBearbeitenController
         if (controller != null) {
             controller.setAhvNummer(ahvNummer);
         } else {
-            System.err.println("Edit controller is null, cannot set AHV number.");
+            System.err.println("PersonenBearbeitenController ist null, kann nicht AHV-Nummer setzen.");
         }
 
         stage.setScene(scene);

@@ -10,7 +10,7 @@ public class DatabaseConnection {
     public static Connection getDatabase() {
         String url = "jdbc:mysql://localhost:3306/m411db";
         String user = "root";
-        String password = ""; // Ändern Sie dies entsprechend
+        String password = "";
 
         try {
             return DriverManager.getConnection(url, user, password);
